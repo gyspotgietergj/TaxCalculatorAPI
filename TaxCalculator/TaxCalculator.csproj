@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
+    <PackageReference Include="NetSpell" Version="2.1.7" />
     <PackageReference Include="NUnit" Version="3.14.0" />
   </ItemGroup>
 

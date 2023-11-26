@@ -54,6 +54,16 @@ namespace TaxCalculator.Common
             return await DoADelete(id.ToString());
         }
 
+        public async Task<decimal> CalculateTax(TaxQuery query)
+        {
+            var response = await DoAGet("GetTaxableAmount/" + query.PostalCode + "/" + query.Income);
+            decimal result = 0m;
+            if (response.IsSuccessStatusCode)
+            {
+                result = JsonConvert.DeserializeObject<decimal>(response.Content.ReadAsStringAsync().Result);
+            }
+            return result;
+        }
         private async Task<HttpResponseMessage> DoAGet(string endpoint)
         {
             ServicePointManager.Expect100Continue = true;

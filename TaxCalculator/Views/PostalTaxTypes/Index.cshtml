@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Postal Code Tax Rates</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -25,24 +25,27 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PostalCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaxType)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new {  id=item.ID  }) |
-                    @Html.ActionLink("Details", "Details", new {  id=item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new {  id=item.ID })
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostalCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaxType)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

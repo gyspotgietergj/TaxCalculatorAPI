@@ -116,5 +116,33 @@ namespace TaxCalculatorAPI.Controllers
         {
             return (_context.PostalTaxTypes?.Any(e => e.ID == id)).GetValueOrDefault();
         }
+
+        [HttpGet]
+        [Route("GetTaxableAmount/{postalCode}/{income}")]
+        public async Task<ActionResult<decimal>> GetTaxQuery(int postalCode, decimal income)
+        {
+            if (_context.TaxQuery == null)
+            {
+                return NotFound();
+            }
+            if (postalCode < 0 || income <= 0)
+            {
+                return BadRequest("Invalid Parameters. Income must be more than 0 and postal code must have a value.");
+            }
+
+            var postalTaxType = _context.PostalTaxTypes.Where(x => x.ID == postalCode).FirstOrDefault();
+            if (postalTaxType == null)
+            {
+                return NotFound("Postal code not available for tax calculation");
+            }
+            var taxQuery = new TaxQuery();
+            taxQuery.Income = income;
+            taxQuery.PostalCode = postalCode;
+            taxQuery.RequestDate = DateTime.Now;
+            _context.TaxQuery.Add(taxQuery);
+            await _context.SaveChangesAsync();
+
+            return TaxCalculations.TaxCalculations.CalculateTax(taxQuery.Income, (TaxTypes)postalTaxType.TaxType);
+        }
     }
 }

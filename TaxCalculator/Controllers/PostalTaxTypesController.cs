@@ -16,8 +16,8 @@ namespace TaxCalculator.Controllers
         // GET: PostalTaxTypesController
         public async Task<ActionResult> Index()
         {
-            var model = await _taxCalculatorInterface.GetPostalTaxTypes();
-            return View(model);
+            var postalTaxTypes = await _taxCalculatorInterface.GetPostalTaxTypes();
+            return View(postalTaxTypes);
         }
 
         // GET: PostalTaxTypesController/Details/5
