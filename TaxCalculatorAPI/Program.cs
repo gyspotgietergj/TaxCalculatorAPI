@@ -2,14 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using TaxCalculatorAPI.Data;
 using TaxCalculatorAPI.Controllers;
+using NuGet.Protocol;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TaxCalculatorAPIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TaxCalculatorAPIContext") ?? throw new InvalidOperationException("Connection string 'TaxCalculatorAPIContext' not found.")));
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

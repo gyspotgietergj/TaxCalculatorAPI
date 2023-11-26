@@ -15,7 +15,7 @@ namespace TaxCalculatorAPI.Controllers
     [ApiController]
     public class PostalTaxTypesController : ControllerBase
     {
-        private readonly TaxCalculatorAPIContext _context;
+        private TaxCalculatorAPIContext _context;
 
         public PostalTaxTypesController(TaxCalculatorAPIContext context)
         {
@@ -25,6 +25,28 @@ namespace TaxCalculatorAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostalTaxTypes>>> GetPostalTaxTypes()
         {
+            return new List<PostalTaxTypes>()
+            {
+                new PostalTaxTypes()
+                {
+                    ID =1,
+                    PostalCode = "1594",
+                    TaxType =1
+                },
+                new PostalTaxTypes()
+                {
+                    ID =2,
+                    TaxType=2,
+                    PostalCode="AAAAA"
+                },
+                new PostalTaxTypes()
+                {
+                    ID =3,
+                    PostalCode="BBBBB",
+                    TaxType = 3
+                }
+            };
+
             if (_context.PostalTaxTypes == null)
             {
                 return NotFound();
@@ -35,6 +57,12 @@ namespace TaxCalculatorAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PostalTaxTypes>> GetPostalTaxTypes(int id)
         {
+            return new PostalTaxTypes()
+            {
+                ID = 1,
+                PostalCode = "1594",
+                TaxType = 1
+            };
             if (_context.PostalTaxTypes == null)
             {
                 return NotFound();
