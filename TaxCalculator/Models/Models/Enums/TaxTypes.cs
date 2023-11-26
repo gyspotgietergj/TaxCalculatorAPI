@@ -1,6 +1,6 @@
 ﻿namespace TaxCalculatorAPI.Models.Enums
 {
-    public enum TaxTypes
+    public enum TaxTypes:int
     {
         Progressive = 1, 
         FlatRate = 2,

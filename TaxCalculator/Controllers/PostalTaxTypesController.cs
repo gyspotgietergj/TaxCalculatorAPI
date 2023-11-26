@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using TaxCalculator.Common.Interfaces;
+using TaxCalculatorAPI.Models;
 
 namespace TaxCalculator.Controllers
 {
@@ -12,16 +14,16 @@ namespace TaxCalculator.Controllers
             _taxCalculatorInterface = taxCalculatorInterface;
         }
         // GET: PostalTaxTypesController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var model = _taxCalculatorInterface.GetPostalTaxTypes().Result;
+            var model = await _taxCalculatorInterface.GetPostalTaxTypes();
             return View(model);
         }
 
         // GET: PostalTaxTypesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            var model = _taxCalculatorInterface.GetPostalTaxDetail(id).Result;
+            var model = await _taxCalculatorInterface.GetPostalTaxDetail(id);
             return View(model);
         }
 
@@ -34,57 +36,72 @@ namespace TaxCalculator.Controllers
         // POST: PostalTaxTypesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(IFormCollection collection)
         {
             try
             {
+                PostalTaxTypes postalTaxTypes = new PostalTaxTypes();
+                var check = TryUpdateModelAsync(postalTaxTypes).Result;
+                if (check)
+                {
+                    await _taxCalculatorInterface.CreatePostalTaxType(postalTaxTypes);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 
         // GET: PostalTaxTypesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var model = await _taxCalculatorInterface.GetPostalTaxDetail(id);
+            return View(model);
         }
 
         // POST: PostalTaxTypesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, IFormCollection collection)
         {
             try
             {
+                PostalTaxTypes postalTaxTypes = new PostalTaxTypes();
+                var check = await TryUpdateModelAsync(postalTaxTypes);
+                if (check)
+                {
+                    await _taxCalculatorInterface.UpdatePostalTaxType(id, postalTaxTypes);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 
         // GET: PostalTaxTypesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var model = await _taxCalculatorInterface.GetPostalTaxDetail(id);
+            return View(model);
         }
 
         // POST: PostalTaxTypesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+                await _taxCalculatorInterface.DeletePostalTaxType(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
     }

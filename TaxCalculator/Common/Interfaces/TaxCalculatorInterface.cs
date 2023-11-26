@@ -6,5 +6,8 @@ namespace TaxCalculator.Common.Interfaces
     {
         Task<List<PostalTaxTypes>> GetPostalTaxTypes();
         Task<PostalTaxTypes> GetPostalTaxDetail(int Id);
+        Task<bool> CreatePostalTaxType(PostalTaxTypes postalTaxTypes);
+        Task<bool> UpdatePostalTaxType(int id, PostalTaxTypes postalTaxTypes);
+        Task<bool> DeletePostalTaxType(int id);
     }
 }

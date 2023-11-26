@@ -25,28 +25,6 @@ namespace TaxCalculatorAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostalTaxTypes>>> GetPostalTaxTypes()
         {
-            return new List<PostalTaxTypes>()
-            {
-                new PostalTaxTypes()
-                {
-                    ID =1,
-                    PostalCode = "1594",
-                    TaxType =1
-                },
-                new PostalTaxTypes()
-                {
-                    ID =2,
-                    TaxType=2,
-                    PostalCode="AAAAA"
-                },
-                new PostalTaxTypes()
-                {
-                    ID =3,
-                    PostalCode="BBBBB",
-                    TaxType = 3
-                }
-            };
-
             if (_context.PostalTaxTypes == null)
             {
                 return NotFound();
@@ -57,12 +35,6 @@ namespace TaxCalculatorAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PostalTaxTypes>> GetPostalTaxTypes(int id)
         {
-            return new PostalTaxTypes()
-            {
-                ID = 1,
-                PostalCode = "1594",
-                TaxType = 1
-            };
             if (_context.PostalTaxTypes == null)
             {
                 return NotFound();
@@ -78,13 +50,8 @@ namespace TaxCalculatorAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPostalTaxTypes(int id, string postalCode, TaxTypes taxType)
+        public async Task<IActionResult> PutPostalTaxTypes(int id, PostalTaxTypes postalTaxTypes)
         {
-            var postalTaxTypes = new PostalTaxTypes();
-            postalTaxTypes.ID = id;
-            postalTaxTypes.PostalCode = postalCode;
-            postalTaxTypes.TaxType = (int)taxType;
-
             _context.Entry(postalTaxTypes).State = EntityState.Modified;
 
             try
@@ -107,22 +74,18 @@ namespace TaxCalculatorAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PostalTaxTypes>> PostPostalTaxTypes(string postalCode, TaxTypes taxType)
+        public async Task<ActionResult<PostalTaxTypes>> PostPostalTaxTypes(PostalTaxTypes postalTaxTypes)
         {
             if (_context.PostalTaxTypes == null)
             {
                 return Problem("Entity set 'TaxCalculatorAPIContext.PostalTaxTypes'  is null.");
             }
 
-            var checkExist = _context.PostalTaxTypes.Where(x => x.PostalCode == postalCode).FirstOrDefault();
+            var checkExist = _context.PostalTaxTypes.Where(x => x.PostalCode == postalTaxTypes.PostalCode).FirstOrDefault();
             if (checkExist != null)
             {
                 return BadRequest("Postal Code already exists: " + checkExist.ID);
             }
-
-            var postalTaxTypes = new PostalTaxTypes();
-            postalTaxTypes.PostalCode = postalCode;
-            postalTaxTypes.TaxType = (int)taxType;
 
             _context.PostalTaxTypes.Add(postalTaxTypes);
             var id = await _context.SaveChangesAsync();
